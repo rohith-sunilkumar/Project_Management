@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:3000/api/tasks";
+const API = `${import.meta.env.VITE_API_URL}/api/tasks`;
 
 export const getTasks = (projectId) =>
   axios.get(`${API}/project/${projectId}`, {

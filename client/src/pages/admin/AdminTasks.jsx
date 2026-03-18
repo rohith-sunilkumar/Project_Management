@@ -8,7 +8,7 @@ const AdminTasks = () => {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/api/admin/tasks",
+        `${import.meta.env.VITE_API_URL}/api/admin/tasks`,
         { withCredentials: true }
       );
 
@@ -32,7 +32,7 @@ const AdminTasks = () => {
     }
     try {
       await axios.delete(
-        `http://localhost:3000/api/tasks/${taskId}`,
+        `${import.meta.env.VITE_API_URL}/api/tasks/${taskId}`,
         { withCredentials: true }
       );
       setTasks(tasks.filter((task) => task._id !== taskId));

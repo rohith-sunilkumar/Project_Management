@@ -13,7 +13,7 @@ const AdminDashboard = () => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/api/admin/dashboard",
+          `${import.meta.env.VITE_API_URL}/api/admin/dashboard`,
           { withCredentials: true },
         );
 

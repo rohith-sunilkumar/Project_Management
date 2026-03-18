@@ -7,7 +7,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/dashboard", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/dashboard`, {
           withCredentials: true,
         });
         setStats(res.data);

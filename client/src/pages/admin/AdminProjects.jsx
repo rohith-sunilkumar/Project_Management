@@ -8,7 +8,7 @@ const AdminProjects = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/admin/projects", {
+      .get(`${import.meta.env.VITE_API_URL}/api/admin/projects`, {
         withCredentials: true,
       })
       .then((res) => setProjects(res.data.projects));
