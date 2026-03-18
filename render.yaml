@@ -1,9 +1,9 @@
-builds:
-  - command: npm run build
-    dir: client
-staticSite:
-  source: client/dist
-  routes:
-    - path: "/*"
-      destination: "/index.html"
-      statusCode: 200
+services:
+  - type: web
+    name: Project_Management
+    runtime: node
+    buildCommand: npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
