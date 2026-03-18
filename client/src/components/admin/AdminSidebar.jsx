@@ -1,16 +1,57 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 const AdminSidebar = () => {
-  return (
-    <div className="w-64 h-screen bg-gray-900 text-white p-5 fixed top-0 left-0">
-      <h1 className="text-xl font-bold mb-8">Admin Panel</h1>
+  const [isOpen, setIsOpen] = useState(false);
 
-      <nav className="flex flex-col gap-4">
-        <NavLink to="/admin">Dashboard</NavLink>
-        <NavLink to="/admin/users">Users</NavLink>
-        <NavLink to="/admin/projects">Projects</NavLink>
-      </nav>
-    </div>
+  const handleLogout = () => {
+    // call your logout API here
+    console.log("Logout clicked");
+  };
+
+  return (
+    <>
+      {/* 🔹 Mobile Toggle Button */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        ☰
+      </button>
+
+      {/* 🔹 Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-screen w-64 bg-gray-900 text-white p-5 flex flex-col justify-between transform transition-transform duration-300 z-40
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        {/* Top Section */}
+        <div>
+          <h1 className="text-xl font-bold mb-8">Admin Panel</h1>
+
+          <nav className="flex flex-col gap-4">
+            <NavLink to="/admin">Dashboard</NavLink>
+            <NavLink to="/admin/users">Users</NavLink>
+            <NavLink to="/admin/projects">Projects</NavLink>
+          </nav>
+        </div>
+
+        {/* 🔻 Bottom Logout */}
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 hover:bg-red-600 p-2 rounded mt-6"
+        >
+          Logout
+        </button>
+      </div>
+
+      {/* 🔹 Overlay (for mobile) */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+    </>
   );
 };
 
