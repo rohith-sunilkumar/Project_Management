@@ -1,0 +1,9 @@
+builds:
+  - command: npm run build
+    dir: client
+staticSite:
+  source: client/dist
+  routes:
+    - path: "/*"
+      destination: "/index.html"
+      statusCode: 200
