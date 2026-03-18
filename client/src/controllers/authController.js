@@ -15,7 +15,6 @@ export const handleLogin = async (form, navigate, setUser) => {
     const res = await loginUser(form);
     const user = res.data.user;
     setUser(user);
-    // 🔥 ROLE BASED REDIRECT
     if (user.role === "admin") {
       navigate("/admin");
     } else {

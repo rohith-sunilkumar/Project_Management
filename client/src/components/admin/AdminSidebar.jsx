@@ -1,12 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { logoutUser } from "../../api/authApi";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // call your logout API here
-    console.log("Logout clicked");
+  const handleLogout = async () => {
+    await logoutUser();
+    setUser(null);
+    navigate("/");
   };
 
   return (

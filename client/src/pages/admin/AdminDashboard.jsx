@@ -16,7 +16,6 @@ const AdminDashboard = () => {
           `${import.meta.env.VITE_API_URL}/api/admin/dashboard`,
           { withCredentials: true },
         );
-
         setStats({
           totalUsers: res.data.stats.users,
           totalProjects: res.data.stats.projects,
@@ -27,34 +26,25 @@ const AdminDashboard = () => {
         console.log(error);
       }
     };
-
     fetchStats();
   }, []);
 
   return (
     <>
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-
       <div className="grid md:grid-cols-4 gap-6">
-        {/* Users */}
         <div className="bg-white p-5 rounded shadow">
           <p className="text-gray-500">Users</p>
           <h2 className="text-2xl font-bold">{stats.totalUsers}</h2>
         </div>
-
-        {/* Projects */}
         <div className="bg-white p-5 rounded shadow">
           <p className="text-gray-500">Projects</p>
           <h2 className="text-2xl font-bold">{stats.totalProjects}</h2>
         </div>
-
-        {/* Tasks */}
         <div className="bg-white p-5 rounded shadow">
           <p className="text-gray-500">Tasks</p>
           <h2 className="text-2xl font-bold">{stats.totalTasks}</h2>
         </div>
-
-        {/* Completed */}
         <div className="bg-white p-5 rounded shadow">
           <p className="text-gray-500">Completed</p>
           <h2 className="text-2xl font-bold text-green-500">

@@ -22,13 +22,10 @@ const AdminProjects = () => {
         {projects.map((project) => (
           <div key={project._id} className="bg-white p-4 rounded shadow">
             <h2 className="font-bold">{project.title}</h2>
-
             <p>{project.description}</p>
-
             <p className="text-blue-500">
               By: {project.user?.name}
             </p>
-
             <button
               onClick={() =>
                 navigate(`/admin/project/${project._id}`)

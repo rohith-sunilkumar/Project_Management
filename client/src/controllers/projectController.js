@@ -20,11 +20,8 @@ export const handleCreateProject = async (
 ) => {
   try {
     const res = await createProject(form);
-
     setProjects((prev) => [res.data.project, ...prev]);
-
     setForm({ title: "", description: "" });
-
   } catch (error) {
     console.log(error);
   }
@@ -33,9 +30,7 @@ export const handleCreateProject = async (
 export const handleDeleteProject = async (id, setProjects) => {
   try {
     await deleteProject(id);
-
     setProjects((prev) => prev.filter((p) => p._id !== id));
-
   } catch (error) {
     console.log(error);
   }
