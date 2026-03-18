@@ -1,0 +1,40 @@
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import connectdb from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoute.js";
+import cors from "cors";
+
+const app = express();
+dotenv.config();
+const PORT = process.env.PORT;
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
+app.use("/api/users", userRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/admin", adminRoutes);
+
+connectdb()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`server is running at http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("DB connection failed:", error);
+  });
+
+export default app;
