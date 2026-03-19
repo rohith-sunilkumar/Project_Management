@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { handleRegister } from "../controllers/authController";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -64,6 +64,12 @@ const Register = () => {
           >
             {loading ? "Registering..." : "Register"}
           </button>
+          <p className="text-center text-gray-600">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>
