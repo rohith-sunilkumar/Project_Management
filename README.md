@@ -89,5 +89,3 @@ The application relies on three core interconnected entities:
 - **`/api/admin`**: Protected endpoints specifically for admin-level operations.
 - **`/api/dashboard`**: Endpoints to fetch summary statistics for dashboards.
 
----
-*This README was auto-generated to document the full scope and capabilities of the Project Management system.*
