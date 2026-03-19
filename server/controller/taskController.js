@@ -11,12 +11,21 @@ export const createTask = async (req, res) => {
       });
     }
     const project = await Project.findById(projectId);
-    console.log(project);
 
     if (!project) {
       return res.status(404).json({
         success: false,
         message: "Project not found",
+      });
+    }
+
+    const isOwner = project.user.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized - You do not own this project",
       });
     }
     const task = await Task.create({
@@ -49,7 +58,7 @@ export const getProjectTasks = async (req, res) => {
     }
     const isOwner = project.user.toString() === req.user._id.toString();
     const isAdmin = req.user.role === "admin";
-    
+
     if (!isOwner && !isAdmin) {
       return res.status(403).json({
         success: false,
@@ -83,7 +92,7 @@ export const updateTask = async (req, res) => {
     const project = await Project.findById(task.project);
     const isOwner = project.user.toString() === req.user._id.toString();
     const isAdmin = req.user.role === "admin";
-    
+
     if (!isOwner && !isAdmin) {
       return res.status(403).json({
         success: false,
@@ -118,7 +127,7 @@ export const deleteTask = async (req, res) => {
     const project = await Project.findById(task.project);
     const isOwner = project.user.toString() === req.user._id.toString();
     const isAdmin = req.user.role === "admin";
-    
+
     if (!isOwner && !isAdmin) {
       return res.status(403).json({
         success: false,
