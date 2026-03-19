@@ -76,8 +76,10 @@ export const logout = async (req, res) => {
   const option = {
     expires: new Date(Date.now()),
     httpOnly: true,
+    sameSite: "none",
+    secure: process.env.NODE_ENV === "production",
   };
-  res.cookie("Token", null, option);
+  res.cookie("Token", "", option);
   res.status(200).json({ success: true, message: "Successfully logged Out" });
 };
 
