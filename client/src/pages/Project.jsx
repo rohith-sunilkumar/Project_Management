@@ -32,30 +32,30 @@ const Projects = () => {
         <div className="flex gap-2 flex-wrap">
           <input
             type="text"
-            placeholder="Title"
+            placeholder="Enter project title"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="border p-2 rounded w-full md:w-auto flex-1"
+            className="border p-2 rounded w-full"
           />
 
           <input
             type="text"
-            placeholder="Description"
+            placeholder="Enter description"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="border p-2 rounded w-full md:w-auto flex-1"
+            className="border p-2 rounded w-full"
           />
 
           <input
             type="date"
-            value={form.dueDate || ""} // ✅ FIXED
+            value={form.dueDate || ""}
             onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-            className="border p-2 rounded"
+            className="border p-2 rounded w-full"
           />
 
           <button
             onClick={() => handleCreateProject(form, setProjects, setForm)}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
           >
             Add
           </button>
