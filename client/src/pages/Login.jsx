@@ -10,12 +10,20 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ 
+    setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await handleLogin(form, navigate, setUser);
+    setLoading(false);
   };
 
   return (
@@ -24,10 +32,7 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleLogin(form, navigate, setUser);
-          }}
+          onSubmit={handleSubmit}
           className="space-y-4"
         >
           <input
@@ -48,8 +53,13 @@ const Login = () => {
             required
           />
 
-          <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600">
-            Login
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full text-white py-3 rounded-lg ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              }`}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
