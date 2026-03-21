@@ -11,6 +11,12 @@ const ProjectDetails = () => {
     description: "",
     dueDate: "",
   });
+  const [editTaskId, setEditTaskId] = useState(null);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+  });
   const loadTasks = async () => {
     try {
       const res = await getTasks(id);
@@ -43,6 +49,11 @@ const ProjectDetails = () => {
   };
   const handleDelete = async (taskId) => {
     await deleteTask(taskId);
+    loadTasks();
+  };
+  const handleEdit = async (taskId) => {
+    await updateTask(taskId, editForm);
+    setEditTaskId(null);
     loadTasks();
   };
   return (
@@ -93,40 +104,92 @@ const ProjectDetails = () => {
               key={task._id}
               className="bg-white border p-4 rounded-xl flex justify-between items-center"
             >
-              <div>
-                <h2 className="font-bold">{task.title}</h2>
-                <p className="text-gray-500">{task.description}</p>
+              {editTaskId === task._id ? (
+                <div className="flex flex-col gap-2 w-full">
+                  <input
+                    type="text"
+                    value={editForm.title}
+                    onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="text"
+                    value={editForm.description}
+                    onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="date"
+                    value={editForm.dueDate ? editForm.dueDate.substring(0, 10) : ""}
+                    onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
+                    className="border p-2 rounded"
+                  />
+                  <div className="flex justify-end gap-2 mt-2">
+                    <button
+                      onClick={() => setEditTaskId(null)}
+                      className="text-gray-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => handleEdit(task._id)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <h2 className="font-bold">{task.title}</h2>
+                    <p className="text-gray-500">{task.description}</p>
 
-                <p className="text-sm text-gray-400 mt-1">
-                  Created: {new Date(task.createdAt).toLocaleString()}
-                </p>
+                    <p className="text-sm text-gray-400 mt-1">
+                      Created: {new Date(task.createdAt).toLocaleString()}
+                    </p>
 
-                <p className="text-sm text-red-500">
-                  Deadline:{" "}
-                  {task.dueDate
-                    ? new Date(task.dueDate).toLocaleDateString()
-                    : "No deadline"}
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => toggleStatus(task)}
-                  className={`px-3 py-1 rounded ${
-                    task.status === "Completed"
-                      ? "bg-green-500 text-white"
-                      : "bg-yellow-400"
-                  }`}
-                >
-                  {task.status}
-                </button>
+                    <p className="text-sm text-red-500">
+                      Deadline:{" "}
+                      {task.dueDate
+                        ? new Date(task.dueDate).toLocaleDateString()
+                        : "No deadline"}
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => toggleStatus(task)}
+                      className={`px-3 py-1 rounded ${task.status === "Completed"
+                          ? "bg-green-500 text-white"
+                          : "bg-yellow-400"
+                        }`}
+                    >
+                      {task.status}
+                    </button>
 
-                <button
-                  onClick={() => handleDelete(task._id)}
-                  className="text-red-500"
-                >
-                  Delete
-                </button>
-              </div>
+                    <button
+                      onClick={() => {
+                        setEditTaskId(task._id);
+                        setEditForm({
+                          title: task.title,
+                          description: task.description,
+                          dueDate: task.dueDate || "",
+                        });
+                      }}
+                      className="text-yellow-500"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(task._id)}
+                      className="text-red-500"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           ))
         )}

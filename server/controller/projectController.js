@@ -8,7 +8,7 @@ export const createProject = async (req, res) => {
     dueDate: req.body.dueDate,
   });
   console.log(project);
-  
+
   res.status(201).json({
     success: true,
     project,
@@ -58,23 +58,33 @@ export const getSingleProject = async (req, res) => {
 
 export const updateProject = async (req, res) => {
   try {
-    const project = await Project.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        user: req.user._id
-      },
-      req.body,
-      {
-        new: true,
-        runValidators: true
-      }
-    );
+    let project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).json({
         success: false,
         message: "Project not found"
       });
     }
+
+    const isOwner = project.user.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized - You do not own this project",
+      });
+    }
+
+    project = await Project.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
     res.status(200).json({
       success: true,
       project
@@ -89,16 +99,26 @@ export const updateProject = async (req, res) => {
 
 export const deleteProject = async (req, res) => {
   try {
-    const project = await Project.findOneAndDelete({
-      _id: req.params.id,
-      user: req.user._id
-    });
+    const project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).json({
         success: false,
         message: "Project not found"
       });
     }
+
+    const isOwner = project.user.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized - You do not own this project",
+      });
+    }
+
+    await Project.findByIdAndDelete(req.params.id);
+
     res.status(200).json({
       success: true,
       message: "Project deleted successfully"
@@ -108,6 +128,5 @@ export const deleteProject = async (req, res) => {
       success: false,
       message: "Project cannot be deleted"
     });
-
   }
 };

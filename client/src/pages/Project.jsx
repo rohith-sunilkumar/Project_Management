@@ -3,12 +3,19 @@ import {
   fetchProjects,
   handleCreateProject,
   handleDeleteProject,
+  handleUpdateProject,
 } from "../controllers/projectController";
 import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [form, setForm] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+  });
+  const [editProjectId, setEditProjectId] = useState(null);
+  const [editForm, setEditForm] = useState({
     title: "",
     description: "",
     dueDate: "",
@@ -69,38 +76,93 @@ const Projects = () => {
         ) : (
           projects.map((project) => (
             <div key={project._id} className="bg-white p-4 rounded-xl shadow">
-              <h2 className="text-lg font-bold">{project.title}</h2>
+              {editProjectId === project._id ? (
+                <div className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    value={editForm.title}
+                    onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                    className="border p-2 rounded w-full"
+                  />
+                  <input
+                    type="text"
+                    value={editForm.description}
+                    onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                    className="border p-2 rounded w-full"
+                  />
+                  <input
+                    type="date"
+                    value={editForm.dueDate ? editForm.dueDate.substring(0, 10) : ""}
+                    onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
+                    className="border p-2 rounded w-full"
+                  />
+                  <div className="flex justify-end gap-2 mt-2">
+                    <button
+                      onClick={() => setEditProjectId(null)}
+                      className="text-gray-500"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => handleUpdateProject(project._id, editForm, setProjects, setEditProjectId)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h2 className="text-lg font-bold">{project.title}</h2>
 
-              <p className="text-gray-500">{project.description}</p>
+                  <p className="text-gray-500">{project.description}</p>
 
-              {/* Created Date & Time */}
-              <p className="text-sm text-gray-500 mt-2">
-                Created: {new Date(project.createdAt).toLocaleString()}
-              </p>
+                  {/* Created Date & Time */}
+                  <p className="text-sm text-gray-500 mt-2">
+                    Created: {new Date(project.createdAt).toLocaleString()}
+                  </p>
 
-              {/* Deadline */}
-              <p className="text-sm text-red-500">
-                Deadline:{" "}
-                {project.dueDate
-                  ? new Date(project.dueDate).toLocaleDateString()
-                  : "No deadline"}
-              </p>
+                  {/* Deadline */}
+                  <p className="text-sm text-red-500">
+                    Deadline:{" "}
+                    {project.dueDate
+                      ? new Date(project.dueDate).toLocaleDateString()
+                      : "No deadline"}
+                  </p>
 
-              <div className="flex justify-between mt-4">
-                <button
-                  onClick={() => navigate(`/project/${project._id}`)}
-                  className="text-blue-500"
-                >
-                  View
-                </button>
+                  <div className="flex justify-between mt-4">
+                    <button
+                      onClick={() => navigate(`/project/${project._id}`)}
+                      className="text-blue-500"
+                    >
+                      View
+                    </button>
 
-                <button
-                  onClick={() => handleDeleteProject(project._id, setProjects)}
-                  className="text-red-500"
-                >
-                  Delete
-                </button>
-              </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setEditProjectId(project._id);
+                          setEditForm({
+                            title: project.title,
+                            description: project.description,
+                            dueDate: project.dueDate || "",
+                          });
+                        }}
+                        className="text-yellow-500"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteProject(project._id, setProjects)}
+                        className="text-red-500"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))
         )}

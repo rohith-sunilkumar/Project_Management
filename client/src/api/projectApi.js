@@ -10,3 +10,6 @@ export const createProject = (data) =>
 
 export const deleteProject = (id) =>
   axios.delete(`${API}/${id}`, { withCredentials: true });
+
+export const updateProject = (id, data) =>
+  axios.put(`${API}/${id}`, data, { withCredentials: true });

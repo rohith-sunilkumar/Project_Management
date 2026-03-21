@@ -18,7 +18,7 @@ const AdminSidebar = () => {
     <>
       {/* 🔹 Mobile Toggle Button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 bg-gray-900 text-white p-2 rounded"
+        className="md:hidden fixed top-4 right-4 z-50 bg-gray-900 text-white p-2 rounded"
         onClick={() => setIsOpen(!isOpen)}
       >
         ☰
